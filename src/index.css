@@ -1,0 +1,21 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+	--leva-sizes-rootWidth: 340px;
+}
+
+#root {
+	width: 100vw;
+	height: 100vh;
+}
+
+body {
+	margin: 0;
+	background-image: radial-gradient(#051b3e, #000000);
+}
+
+#particles canvas {
+	z-index: -1;
+}
