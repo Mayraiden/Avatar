@@ -13,7 +13,8 @@
 
 body {
 	margin: 0;
-	background-image: radial-gradient(#051b3e, #000000);
+	/* background-image: radial-gradient(#051b3e, #000000); */
+	background-image: linear-gradient(#0f0606e1, #000);
 }
 
 #particles canvas {

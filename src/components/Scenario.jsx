@@ -1,17 +1,28 @@
-import { CameraControls, Environment } from '@react-three/drei'
-import { useEffect, useRef } from 'react'
-import { Avatar } from './Avatar'
+import { CameraControls, Environment, OrbitControls } from '@react-three/drei';
+import { useEffect, useRef } from 'react';
+import { Avatar } from './Avatar';
 
 export const Scenario = () => {
-	const cameraControls = useRef()
+	const cameraControls = useRef();
+
 	useEffect(() => {
-		cameraControls.current.setLookAt(0, 1.2, 4, 0, 1.0, 0.5, true)
-	}, [])
+		if (cameraControls.current) {
+			cameraControls.current.enabled = true;
+			cameraControls.current.setLookAt(0.5, 1.2, 5, 0.03, 1.55, 0.5, false);
+
+			setTimeout(() => {
+				cameraControls.current.enabled = false;
+			}, 1);
+		}
+	}, []);
+
 	return (
 		<>
 			<CameraControls ref={cameraControls} />
-			<Environment preset="sunset" />
+			<Environment files="/environment/sun_down.hdr" />
+			<directionalLight position={[5, 5, 5]} intensity={0.5} />
+			<ambientLight intensity={0.1} />
 			<Avatar />
 		</>
-	)
-}
+	);
+};

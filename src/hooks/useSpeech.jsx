@@ -1,19 +1,18 @@
-import { createContext, useContext, useEffect, useState } from 'react'
+import { createContext, useContext, useEffect, useState } from 'react';
 
-const backendUrl = 'http://localhost:3000'
+const backendUrl = 'http://localhost:3000';
 
-const SpeechContext = createContext()
+const SpeechContext = createContext();
 
 export const SpeechProvider = ({ children }) => {
-	const [messages, setMessages] = useState([])
-	const [message, setMessage] = useState(null)
-	const [loading, setLoading] = useState(false)
+	const [messages, setMessages] = useState([]);
+	const [message, setMessage] = useState(null);
+	const [loading, setLoading] = useState(false);
 
 	const tts = async (message) => {
-		// Логи перед отправкой запроса
-		console.log('Sending message to server:', message)
+		console.log('Sending message to server:', message);
 
-		setLoading(true)
+		setLoading(true);
 		try {
 			const response = await fetch(`${backendUrl}/tts`, {
 				method: 'POST',
@@ -21,34 +20,33 @@ export const SpeechProvider = ({ children }) => {
 					'Content-Type': 'application/json',
 				},
 				body: JSON.stringify({ text: message }),
-			})
+			});
 			if (!response.ok) {
-				throw new Error(`HTTP error! status: ${response.status}`)
+				throw new Error(`HTTP error! status: ${response.status}`);
 			}
-			const data = await response.json()
+			const data = await response.json();
 
-			// Логируем возвращенные данные
-			console.log('Received response from server:', data)
+			console.log('Received response from server:', data);
 
-			setMessages((prevMessages) => [...prevMessages, ...data.messages])
+			setMessages((prevMessages) => [...prevMessages, ...data.messages]);
 		} catch (error) {
-			console.error('Ошибка при вызове TTS:', error)
+			console.error('Ошибка при вызове TTS:', error);
 		} finally {
-			setLoading(false)
+			setLoading(false);
 		}
-	}
+	};
 
 	const onMessagePlayed = () => {
-		setMessages((prevMessages) => prevMessages.slice(1))
-	}
+		setMessages((prevMessages) => prevMessages.slice(1));
+	};
 
 	useEffect(() => {
 		if (messages.length > 0) {
-			setMessage(messages[0])
+			setMessage(messages[0]);
 		} else {
-			setMessage(null)
+			setMessage(null);
 		}
-	}, [messages])
+	}, [messages]);
 
 	return (
 		<SpeechContext.Provider
@@ -61,13 +59,13 @@ export const SpeechProvider = ({ children }) => {
 		>
 			{children}
 		</SpeechContext.Provider>
-	)
-}
+	);
+};
 
 export const useSpeech = () => {
-	const context = useContext(SpeechContext)
+	const context = useContext(SpeechContext);
 	if (!context) {
-		throw new Error('useSpeech must be used within a SpeechProvider')
+		throw new Error('useSpeech must be used within a SpeechProvider');
 	}
-	return context
-}
+	return context;
+};
